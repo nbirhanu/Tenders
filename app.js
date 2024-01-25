@@ -1,9 +1,12 @@
 const fs = require('fs')
 const express = require('express')
+const morgan = require('morgan')
 
 const app = express()
 
+//MIDDLEWARE
 app.use(express.json())
+app.use(morgan('dev'))
 
 //READ ALL TENDERS
 
@@ -82,12 +85,6 @@ const tenderTender = (req, res) => {
 		},
 	})
 }
-
-// app.get('/api/v1/tenders', getAllTenders)
-// app.post('/api/v1/tenders', createTender)
-// app.get('/api/v1/tenders/:id', getTender)
-// app.patch('/api/v1/tenders/:id', updateTenders)
-// app.delete('/api/v1/tenders/:id', tenderTender)
 
 app.route('/api/v1/tenders').get(getAllTenders).post(createTender)
 app.route('/api/v1/tenders/:id').get(getTender).patch(updateTenders).delete(tenderTender)
