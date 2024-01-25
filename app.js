@@ -53,6 +53,22 @@ app.get('/api/v1/tenders/:id', (req, res) => {
 	})
 })
 
+// UPDATE TENDER
+app.patch('/api/v1/tenders/:id', (req, res) => {
+	const id = +req.params.id
+	if (id > tenders.length) {
+		return res.status(204).json({
+			status: 'faild',
+			message: 'invalid id',
+		})
+	}
+
+	res.status(200).json({
+		status: 'success',
+		data: '<update tender here...>',
+	})
+})
+
 //PORT
 const port = 7000
 app.listen(port, () => {
