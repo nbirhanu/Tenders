@@ -10,7 +10,7 @@ app.use(express.json())
 const tenders = JSON.parse(fs.readFileSync(`${__dirname}/data/allTenders.json`))
 
 //GET TENDERS
-app.get('/api/v1/tenders', (req, res) => {
+const getAllTenders = (req, res) => {
 	res.status(200).json({
 		status: 'success',
 		result: tenders.length,
@@ -18,10 +18,10 @@ app.get('/api/v1/tenders', (req, res) => {
 			tenders,
 		},
 	})
-})
+}
 
-//CREATE TENDERS
-app.post('/api/v1/tenders', (req, res) => {
+//CREATE TENDER
+const createTender = (req, res) => {
 	const newTender = Object.assign(req.body)
 	console.log(newTender)
 	tenders.push(newTender)
@@ -33,10 +33,9 @@ app.post('/api/v1/tenders', (req, res) => {
 			},
 		})
 	})
-})
-
-//GET TENDER BY ID
-app.get('/api/v1/tenders/:id', (req, res) => {
+}
+//get tender by id
+const getTender = (req, res) => {
 	const id = +req.params.id
 	const tender = tenders.find(el => el.id === id)
 	if (!tender) {
@@ -51,10 +50,9 @@ app.get('/api/v1/tenders/:id', (req, res) => {
 			tender,
 		},
 	})
-})
-
+}
 // UPDATE TENDER
-app.patch('/api/v1/tenders/:id', (req, res) => {
+const updateTenders = (req, res) => {
 	const id = +req.params.id
 	if (id > tenders.length) {
 		return res.status(404).json({
@@ -67,10 +65,9 @@ app.patch('/api/v1/tenders/:id', (req, res) => {
 		status: 'success',
 		data: '<update tender here...>',
 	})
-})
-
+}
 //DELETE TENDER
-app.delete('/api/v1/tenders/:id', (req, res) => {
+const tenderTender = (req, res) => {
 	const id = +req.params.id
 	if (id > tenders.length) {
 		return res.status(404).json({
@@ -84,7 +81,16 @@ app.delete('/api/v1/tenders/:id', (req, res) => {
 			tender: null,
 		},
 	})
-})
+}
+
+// app.get('/api/v1/tenders', getAllTenders)
+// app.post('/api/v1/tenders', createTender)
+// app.get('/api/v1/tenders/:id', getTender)
+// app.patch('/api/v1/tenders/:id', updateTenders)
+// app.delete('/api/v1/tenders/:id', tenderTender)
+
+app.route('/api/v1/tenders').get(getAllTenders).post(createTender)
+app.route('/api/v1/tenders/:id').get(getTender).patch(updateTenders).delete(tenderTender)
 
 //PORT
 const port = 7000
