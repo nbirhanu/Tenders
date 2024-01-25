@@ -21,7 +21,6 @@ app.get('/api/v1/tenders', (req, res) => {
 })
 
 //CREATE TENDERS
-
 app.post('/api/v1/tenders', (req, res) => {
 	const newTender = Object.assign(req.body)
 	console.log(newTender)
@@ -36,8 +35,23 @@ app.post('/api/v1/tenders', (req, res) => {
 	})
 })
 
-//MIDDLEWARE
-app.use(express.json())
+//GET TENDER BY ID
+app.get('/api/v1/tenders/:id', (req, res) => {
+	const id = +req.params.id
+	const tender = tenders.find(el => el.id === id)
+	if (!tender) {
+		return res.status(204).json({
+			status: 'faild',
+			message: 'invalid id',
+		})
+	}
+	res.status(200).json({
+		status: 'success',
+		data: {
+			tender,
+		},
+	})
+})
 
 //PORT
 const port = 7000
