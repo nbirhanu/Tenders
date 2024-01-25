@@ -3,6 +3,10 @@ const express = require('express')
 
 const app = express()
 
+//READ ALL TENDERS
+
+const tends = JSON.parse(fs.readFileSync(`${__dirname}/data/allTenders.json`))
+
 //MIDDLEWARE
 app.use(express.json())
 
