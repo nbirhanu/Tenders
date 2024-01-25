@@ -41,7 +41,7 @@ app.get('/api/v1/tenders/:id', (req, res) => {
 	const tender = tenders.find(el => el.id === id)
 	if (!tender) {
 		return res.status(204).json({
-			status: 'faild',
+			status: 'fail',
 			message: 'invalid id',
 		})
 	}
@@ -57,8 +57,8 @@ app.get('/api/v1/tenders/:id', (req, res) => {
 app.patch('/api/v1/tenders/:id', (req, res) => {
 	const id = +req.params.id
 	if (id > tenders.length) {
-		return res.status(204).json({
-			status: 'faild',
+		return res.status(404).json({
+			status: 'fail',
 			message: 'invalid id',
 		})
 	}
@@ -66,6 +66,23 @@ app.patch('/api/v1/tenders/:id', (req, res) => {
 	res.status(200).json({
 		status: 'success',
 		data: '<update tender here...>',
+	})
+})
+
+//DELETE TENDER
+app.delete('/api/v1/tenders/:id', (req, res) => {
+	const id = +req.params.id
+	if (id > tenders.length) {
+		return res.status(404).json({
+			status: 'fail',
+			message: 'invalid id',
+		})
+	}
+	res.status(204).json({
+		status: 'success',
+		data: {
+			tender: null,
+		},
 	})
 })
 
