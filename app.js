@@ -1,15 +1,18 @@
-const express = require('express')
-const morgan = require('morgan')
-const tenderRouter = require('./router/tenderRouter')
-const userRouter = require('./router/useRouter')
-const app = express()
+const express = require('express');
+const morgan = require('morgan');
+const tenderRouter = require('./router/tenderRouter');
+const userRouter = require('./router/useRouter');
+const app = express();
 
 //MIDDLEWARE
-app.use(express.json())
-app.use(morgan('dev'))
+console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+app.use(express.json());
 
 //ROUTERS
-app.use('/api/v1/tenders', tenderRouter)
-app.use('/api/v1/users', userRouter)
+app.use('/api/v1/tenders', tenderRouter);
+app.use('/api/v1/users', userRouter);
 
-module.exports = app
+module.exports = app;
