@@ -32,7 +32,21 @@ exports.getAllTenders = async (req, res) => {
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
     console.log(req.query, queryObj);
-    const query = Tender.find(JSON.parse(queryStr));
+    let query = Tender.find(JSON.parse(queryStr));
+
+    //SORTING
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(',').join(' ');
+      query = query.sort(sortBy);
+    } else {
+      query = query.sort('createdAt');
+    }
+
+    //FIELDS
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join(' ');
+      query = query.select(fields);
+    }
 
     //EXCUTE
     const tenders = await query;
