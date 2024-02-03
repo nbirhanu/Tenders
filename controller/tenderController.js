@@ -23,11 +23,19 @@ exports.createTender = async (req, res) => {
 exports.getAllTenders = async (req, res) => {
   try {
     //FILTERING
-    const query = Tender.find(req.query);
+    const queryObj = { ...req.query };
+    const excludedField = ['limit', 'page', 'sort', 'fields'];
+    excludedField.forEach((el) => delete queryObj[el]);
+
+    //ADVANCEFILTERING
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+
+    console.log(req.query, queryObj);
+    const query = Tender.find(JSON.parse(queryStr));
 
     //EXCUTE
     const tenders = await query;
-    console.log(req.query);
 
     res.status(200).json({
       status: 'success',
@@ -37,7 +45,7 @@ exports.getAllTenders = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(400).json({
+    res.status(404).json({
       status: 'error',
       message: err,
     });
