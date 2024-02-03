@@ -31,7 +31,6 @@ exports.getAllTenders = async (req, res) => {
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-    console.log(req.query, queryObj);
     let query = Tender.find(JSON.parse(queryStr));
 
     //SORTING
@@ -39,7 +38,7 @@ exports.getAllTenders = async (req, res) => {
       const sortBy = req.query.sort.split(',').join(' ');
       query = query.sort(sortBy);
     } else {
-      query = query.sort('createdAt');
+      query = query.sort('createdAt companyName');
     }
 
     //FIELDS
@@ -58,7 +57,7 @@ exports.getAllTenders = async (req, res) => {
     query = query.skip(skip).limit(limit);
 
     if (req.query.page) {
-      const toursNum = Tour.countDocuments();
+      const toursNum = Tender.countDocuments();
       if (skip >= toursNum) throw new Error('this page does not exist!!!');
     }
 
@@ -73,9 +72,10 @@ exports.getAllTenders = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     res.status(404).json({
       status: 'error',
-      message: err,
+      message: err.message,
     });
   }
 };
