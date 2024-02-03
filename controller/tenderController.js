@@ -51,6 +51,16 @@ exports.getAllTenders = async (req, res) => {
     }
 
     //PAGINATION
+    const page = +req.query.page || 1;
+    const limit = +req.query.limit || 100;
+    const skip = (page - 1) * limit;
+
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const toursNum = Tour.countDocuments();
+      if (skip >= toursNum) throw new Error('this page does not exist!!!');
+    }
 
     //EXCUTE
     const tenders = await query;
