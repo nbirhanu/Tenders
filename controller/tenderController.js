@@ -19,6 +19,12 @@ exports.createTender = async (req, res) => {
   }
 };
 
+//ETHIO TELECOM
+exports.ethioTelecom = (req, res, next) => {
+  req.query.catagory = 'telecom';
+  next();
+};
+
 //GET TENDERS
 exports.getAllTenders = async (req, res) => {
   try {
