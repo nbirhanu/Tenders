@@ -1,14 +1,23 @@
-const express = require('express')
-const tenderController = require('./../controller/tenderController')
+const express = require('express');
+const tenderController = require('./../controller/tenderController');
+// const { router } = require('../app');
 
-const router = express.Router()
+const router = express.Router();
 
-router.route('/').get(tenderController.getAllTenders).post(tenderController.createTender)
+//
+router
+  .route('/ethiotelecom')
+  .get(tenderController.ethioTelecom, tenderController.getAllTenders);
 
 router
-	.route('/:id')
-	.get(tenderController.getTender)
-	.patch(tenderController.updateTenders)
-	.delete(tenderController.deleteTender)
+  .route('/')
+  .get(tenderController.getAllTenders)
+  .post(tenderController.createTender);
 
-module.exports = router
+router
+  .route('/:id')
+  .get(tenderController.getTender)
+  .patch(tenderController.updateTenders)
+  .delete(tenderController.deleteTender);
+
+module.exports = router;
